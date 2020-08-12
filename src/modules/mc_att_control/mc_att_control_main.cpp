@@ -249,6 +249,7 @@ MulticopterAttitudeControl::publish_rates_setpoint()
 
 	_v_rates_sp_pub.publish(v_rates_sp);
 }
+extern float temp_outputs[32];
 
 void
 MulticopterAttitudeControl::Run()
@@ -282,6 +283,15 @@ MulticopterAttitudeControl::Run()
 			_vehicle_attitude_setpoint_sub.update(&vehicle_attitude_setpoint);
 			_attitude_control.setAttitudeSetpoint(Quatf(vehicle_attitude_setpoint.q_d), vehicle_attitude_setpoint.yaw_sp_move_rate);
 			_thrust_setpoint_body = Vector3f(vehicle_attitude_setpoint.thrust_body);
+			// Here we have definition for the required oroentations from RC channel
+			temp_outputs[0] = vehicle_attitude_setpoint.q_d[0];
+			temp_outputs[1] = vehicle_attitude_setpoint.q_d[1];
+			temp_outputs[2] = vehicle_attitude_setpoint.q_d[2];
+			temp_outputs[3] = vehicle_attitude_setpoint.q_d[3];
+			temp_outputs[4] = vehicle_attitude_setpoint.yaw_sp_move_rate;
+			temp_outputs[5] = Eulerf(Quatf(vehicle_attitude_setpoint.q_d)).phi()*180/(float)M_PI;
+			temp_outputs[6] = Eulerf(Quatf(vehicle_attitude_setpoint.q_d)).theta()*180/(float)M_PI;
+			temp_outputs[7] = Eulerf(Quatf(vehicle_attitude_setpoint.q_d)).psi()*180/(float)M_PI;
 		}
 
 		// Check for a heading reset

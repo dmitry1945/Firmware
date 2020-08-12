@@ -1309,18 +1309,25 @@ PX4IO::io_set_control_state(unsigned group)
 	}
 
 	uint16_t regs[sizeof(controls.control) / sizeof(controls.control[0])] = {};
+	// temp_outputs[0] = 0.1;
+	// temp_outputs[1] = 0;
+	// temp_outputs[2] = 0;
+	// temp_outputs[3] = 0.5;
 
 	for (unsigned i = 0; (i < _max_controls) && (i < sizeof(controls.control) / sizeof(controls.control[0])); i++) {
 		/* ensure FLOAT_TO_REG does not produce an integer overflow */
-		const float ctrl = math::constrain(controls.control[i], -1.0f, 1.0f);
-
+		float ctrl = math::constrain(controls.control[i], -1.0f, 1.0f);
+		// DYA - here the output transfers to the px4io
+		// // --------------------------------------------------
+		// if (i> 3) temp_outputs[i] = controls.control[i];
+		// float ctrl = math::constrain(temp_outputs[i], -1.0f, 1.0f);
+		// // --------------------------------------------------
 		if (!isfinite(ctrl)) {
 			regs[i] = INT16_MAX;
 
 		} else {
 			regs[i] = FLOAT_TO_REG(ctrl);
 		}
-
 	}
 
 	if (!_test_fmu_fail && !_motor_test.in_test_mode) {
@@ -2737,9 +2744,9 @@ PX4IO::ioctl(file *filep, int cmd, unsigned long arg)
 
 	case PWM_SERVO_SET(0) ... PWM_SERVO_SET(PWM_OUTPUT_MAX_CHANNELS - 1): {
 
+
 			/* TODO: we could go lower for e.g. TurboPWM */
 			unsigned channel = cmd - PWM_SERVO_SET(0);
-
 			/* PWM needs to be either 0 or in the valid range. */
 			if ((arg != 0) && ((channel >= _max_actuators) ||
 					   (arg < PWM_LOWEST_MIN) ||

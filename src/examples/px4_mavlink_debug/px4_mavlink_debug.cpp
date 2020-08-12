@@ -65,11 +65,25 @@ int px4_mavlink_debug_main(int argc, char *argv[])
 	dbg_key.value = 0.0f;
 	orb_advert_t pub_dbg_key = orb_advertise(ORB_ID(debug_key_value), &dbg_key);
 
+
+	/* advertise named debug value */
+	struct debug_key_value_s dbg_key_dya;
+	strncpy(dbg_key_dya.key, "DYA_val", 10);
+	dbg_key_dya.value = 10.0f;
+	orb_advert_t pub_dbg_key_dya = orb_advertise(ORB_ID(debug_key_value), &dbg_key_dya);
+
+
 	/* advertise indexed debug value */
 	struct debug_value_s dbg_ind;
 	dbg_ind.ind = 42;
 	dbg_ind.value = 0.5f;
 	orb_advert_t pub_dbg_ind = orb_advertise(ORB_ID(debug_value), &dbg_ind);
+
+	/* advertise indexed debug value */
+	struct debug_value_s dbg_ind_dya;
+	dbg_ind_dya.ind = 43;
+	dbg_ind_dya.value = 10.5f;
+	orb_advert_t pub_dbg_ind_dya = orb_advertise(ORB_ID(debug_value), &dbg_ind_dya);
 
 	/* advertise debug vect */
 	struct debug_vect_s dbg_vect;
@@ -95,10 +109,20 @@ int px4_mavlink_debug_main(int argc, char *argv[])
 		dbg_key.timestamp = timestamp_us;
 		orb_publish(ORB_ID(debug_key_value), pub_dbg_key, &dbg_key);
 
+		/* send one named value */
+		dbg_key_dya.value += value_counter;
+		dbg_key_dya.timestamp = timestamp_us;
+		orb_publish(ORB_ID(debug_key_value), pub_dbg_key_dya, &dbg_key_dya);
+
 		/* send one indexed value */
 		dbg_ind.value = 0.5f * value_counter;
 		dbg_ind.timestamp = timestamp_us;
 		orb_publish(ORB_ID(debug_value), pub_dbg_ind, &dbg_ind);
+
+		/* send one indexed value */
+		dbg_ind_dya.value = 10.5f * value_counter*3;
+		dbg_ind_dya.timestamp = timestamp_us;
+		orb_publish(ORB_ID(debug_value), pub_dbg_ind_dya, &dbg_ind_dya);
 
 		/* send one vector */
 		dbg_vect.x = 1.0f * value_counter;

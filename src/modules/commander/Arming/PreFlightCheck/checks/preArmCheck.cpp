@@ -44,11 +44,11 @@ bool PreFlightCheck::preArmCheck(orb_advert_t *mavlink_log_pub, const vehicle_st
 	bool prearm_ok = true;
 
 	// USB not connected
-	if (!status_flags.circuit_breaker_engaged_usb_check && status_flags.usb_connected) {
-		if (report_fail) { mavlink_log_critical(mavlink_log_pub, "Arming denied! Flying with USB is not safe"); }
+	// if (!status_flags.circuit_breaker_engaged_usb_check && status_flags.usb_connected) {
+	// 	if (report_fail) { mavlink_log_critical(mavlink_log_pub, "Arming denied! Flying with USB is not safe"); }
 
-		prearm_ok = false;
-	}
+	// 	prearm_ok = false;
+	// }
 
 	// battery and system power status
 	if (!status_flags.circuit_breaker_engaged_power_check) {
@@ -64,14 +64,14 @@ bool PreFlightCheck::preArmCheck(orb_advert_t *mavlink_log_pub, const vehicle_st
 		set_health_flags(subsystem_info_s::SUBSYSTEM_TYPE_SENSORBATTERY, true, true,
 				 status_flags.condition_battery_healthy, status);
 
-		// Only arm if healthy
-		if (!status_flags.condition_battery_healthy) {
-			if (prearm_ok) {
-				if (report_fail) { mavlink_log_critical(mavlink_log_pub, "Arming denied! Check battery"); }
-			}
+		// // Only arm if healthy
+		// if (!status_flags.condition_battery_healthy) {
+		// 	if (prearm_ok) {
+		// 		if (report_fail) { mavlink_log_critical(mavlink_log_pub, "Arming denied! Check battery"); }
+		// 	}
 
-			prearm_ok = false;
-		}
+		// 	prearm_ok = false;
+		// }
 	}
 
 	// Arm Requirements: mission

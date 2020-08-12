@@ -97,12 +97,12 @@ bool PreFlightCheck::powerCheck(orb_advert_t *mavlink_log_pub, const vehicle_sta
 		param_get(param_find("COM_POWER_COUNT"), &required_power_module_count);
 
 		if (power_module_count < required_power_module_count) {
-			success = false;
+			// success = false;
 
-			if (report_fail) {
-				mavlink_log_critical(mavlink_log_pub, "Power redundancy not met: %d instead of %d",
-						     power_module_count, required_power_module_count);
-			}
+			// if (report_fail) {
+			// 	mavlink_log_critical(mavlink_log_pub, "Power redundancy not met: %d instead of %d",
+			// 			     power_module_count, required_power_module_count);
+			// }
 		}
 
 	} else {

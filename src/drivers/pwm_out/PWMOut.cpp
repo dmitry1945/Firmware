@@ -33,6 +33,12 @@
 
 #include "PWMOut.hpp"
 
+float temp_outputs[32];
+uint16_t temp_servos[32];
+
+int temp_mode = 0;
+int temp_mix_call_count = 0;
+
 PWMOut::PWMOut() :
 	CDev(PX4FMU_DEVICE_PATH),
 	OutputModuleInterface(MODULE_NAME, px4::wq_configurations::hp_default),
@@ -536,6 +542,7 @@ void PWMOut::update_pwm_out_state(bool on)
 	up_pwm_servo_arm(on);
 }
 
+
 bool PWMOut::updateOutputs(bool stop_motors, uint16_t outputs[MAX_ACTUATORS],
 			   unsigned num_outputs, unsigned num_control_groups_updated)
 {
@@ -995,7 +1002,6 @@ int PWMOut::pwm_ioctl(file *filp, int cmd, unsigned long arg)
 	case PWM_SERVO_SET(0):
 		if (arg <= 2100) {
 			up_pwm_servo_set(cmd - PWM_SERVO_SET(0), arg);
-
 		} else {
 			ret = -EINVAL;
 		}
@@ -2004,6 +2010,17 @@ int PWMOut::print_status()
 	if (mode_str) {
 		PX4_INFO("PWM Mode: %s", mode_str);
 	}
+
+		PX4_INFO("PWM: temp_servos: %i, %i, %i, %i, %i, %i, %i, %i, ",
+			temp_servos[0], temp_servos[1], temp_servos[2], temp_servos[3],
+			temp_servos[4], temp_servos[5], temp_servos[6], temp_servos[7]);
+		PX4_INFO("PWM: outputs: %f, %f, %f, %f, %f, %f, %f, %f, ",
+			(double)temp_outputs[0], (double)temp_outputs[1], (double)temp_outputs[2], (double)temp_outputs[3],
+			(double)temp_outputs[4], (double)temp_outputs[5], (double)temp_outputs[6], (double)temp_outputs[7]);
+		PX4_INFO("PWM: temp_mix_call_count: %i", temp_mix_call_count);
+
+		PX4_INFO("PWM: temp_mode = %i", temp_mode);
+
 
 	perf_print_counter(_cycle_perf);
 	perf_print_counter(_interval_perf);

@@ -395,3 +395,11 @@ PARAM_DEFINE_FLOAT(MC_ACRO_SUPEXPOY, 0.7f);
  * @group Multicopter Rate Control
  */
 PARAM_DEFINE_INT32(MC_BAT_SCALE_EN, 0);
+
+/**
+ * Direction for Z axis.
+ * 1  - standard direction
+ * -1 - inverse direction
+ *
+ */
+PARAM_DEFINE_FLOAT(MC_Z_AXIS_DIR, 1.0f);

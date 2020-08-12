@@ -65,7 +65,7 @@ MulticopterRateControl::init()
 		PX4_ERR("vehicle_angular_velocity callback registration failed!");
 		return false;
 	}
-
+	z_axis_dir = _param_mc_z_axis_dir.get();
 	return true;
 }
 
@@ -119,6 +119,7 @@ MulticopterRateControl::get_landing_gear_state()
 
 	return landing_gear;
 }
+extern float temp_actuators[8];
 
 void
 MulticopterRateControl::Run()
@@ -265,7 +266,8 @@ MulticopterRateControl::Run()
 			}
 
 			// run rate controller
-			const Vector3f att_control = _rate_control.update(rates, _rates_sp, angular_accel, dt, _maybe_landed || _landed);
+			Vector3f att_control = _rate_control.update(rates, _rates_sp, angular_accel, dt, _maybe_landed || _landed);
+			att_control(2) = this->z_axis_dir * att_control(2);
 
 			// publish rate controller status
 			rate_ctrl_status_s rate_ctrl_status{};
@@ -275,11 +277,23 @@ MulticopterRateControl::Run()
 
 			// publish actuator controls
 			actuator_controls_s actuators{};
+
 			actuators.control[actuator_controls_s::INDEX_ROLL] = PX4_ISFINITE(att_control(0)) ? att_control(0) : 0.0f;
 			actuators.control[actuator_controls_s::INDEX_PITCH] = PX4_ISFINITE(att_control(1)) ? att_control(1) : 0.0f;
 			actuators.control[actuator_controls_s::INDEX_YAW] = PX4_ISFINITE(att_control(2)) ? att_control(2) : 0.0f;
 			actuators.control[actuator_controls_s::INDEX_THROTTLE] = PX4_ISFINITE(_thrust_sp) ? _thrust_sp : 0.0f;
 			actuators.control[actuator_controls_s::INDEX_LANDING_GEAR] = (float)_landing_gear.landing_gear;
+
+			// actuators.control[actuator_controls_s::INDEX_ROLL] = 0.0;
+			// actuators.control[actuator_controls_s::INDEX_PITCH] = 0.1;
+			// actuators.control[actuator_controls_s::INDEX_YAW] = 0;
+
+
+			temp_actuators[0] = actuators.control[actuator_controls_s::INDEX_ROLL];
+			temp_actuators[1] = actuators.control[actuator_controls_s::INDEX_PITCH];
+			temp_actuators[2] = actuators.control[actuator_controls_s::INDEX_YAW];
+			temp_actuators[3] = actuators.control[actuator_controls_s::INDEX_THROTTLE];
+
 			actuators.timestamp_sample = angular_velocity.timestamp_sample;
 
 			// scale effort by battery status if enabled
