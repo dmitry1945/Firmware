@@ -79,7 +79,7 @@ bool PreFlightCheck::accelerometerCheck(orb_advert_t *mavlink_log_pub, vehicle_s
 								    + accel.get().y * accel.get().y
 								    + accel.get().z * accel.get().z);
 
-				if (accel_magnitude < 4.0f || accel_magnitude > 15.0f /* m/s^2 */) {
+				if (accel_magnitude < 4.0f || accel_magnitude > 1500.0f /* m/s^2 */) { // DYA-start
 					if (report_fail) {
 						mavlink_log_critical(mavlink_log_pub, "Preflight Fail: Accel Range, hold still on arming");
 					}

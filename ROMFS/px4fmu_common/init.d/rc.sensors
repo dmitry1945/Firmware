@@ -109,8 +109,8 @@ then
 	rm3100 -X start
 
 	# differential pressure sensors
-	if [ ${VEHICLE_TYPE} = fw -o ${VEHICLE_TYPE} = vtol ]
-	then
+#	if [ ${VEHICLE_TYPE} = fw -o ${VEHICLE_TYPE} = vtol ]
+#	then
 		if param compare CBRK_AIRSPD_CHK 0
 		then
 			sdp3x_airspeed start -X
@@ -131,7 +131,7 @@ then
 
 			ets_airspeed start -X
 		fi
-	fi
+#	fi
 fi
 
 ###############################################################################

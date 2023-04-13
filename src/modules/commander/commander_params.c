@@ -577,7 +577,7 @@ PARAM_DEFINE_FLOAT(COM_ARM_EKF_AB, 0.0022f);
  * @group Commander
  * @unit rad
  * @min 0.0001
- * @max 0.0017
+ * @max 0.00170
  * @decimal 4
  * @increment 0.0001
  */

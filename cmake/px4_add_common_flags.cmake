@@ -135,7 +135,7 @@ function(px4_add_common_flags)
 	elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
 		message(FATAL_ERROR "Intel compiler not yet supported")
 	elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-		message(FATAL_ERROR "MS compiler not yet supported")
+#		message(FATAL_ERROR "MS compiler not yet supported")
 	endif()
 
 	# C only flags

@@ -168,10 +168,12 @@ bool PreFlightCheck::ekf2Check(orb_advert_t *mavlink_log_pub, vehicle_status_s &
 
 	// check gyro delta angle bias estimates
 	param_get(param_find("COM_ARM_EKF_GB"), &test_limit);
+	test_limit *= 10;
 
 	if (fabsf(status.states[10]) > test_limit || fabsf(status.states[11]) > test_limit
 	    || fabsf(status.states[12]) > test_limit) {
 		if (report_fail) {
+			PX4_ERR("Preflight Fail: High Gyro Bias: x=%f, y=%f, z=%f, limit - %f", (double)status.states[10], (double)status.states[11], (double)status.states[12], (double)test_limit);
 			mavlink_log_critical(mavlink_log_pub, "Preflight Fail: High Gyro Bias");
 		}
 

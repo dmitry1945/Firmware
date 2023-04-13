@@ -53,6 +53,10 @@ fi
 #
 # mc_rate_control start
 px4_df_eskf start
+
+# Start Airspeed selector
+airspeed_selector start
+
 #
 # Start Multicopter Attitude Controller.
 #
