@@ -152,6 +152,7 @@ void LoggedTopics::add_debug_topics()
 	add_topic("debug_key_value");
 	add_topic("debug_value");
 	add_topic("debug_vect");
+	add_topic("debug_vect_2");
 }
 
 void LoggedTopics::add_estimator_replay_topics()

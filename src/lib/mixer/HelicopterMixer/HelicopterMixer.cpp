@@ -235,6 +235,7 @@ HelicopterMixer::mix(float *outputs, unsigned space)
 		outputs[i + 1] += _mixer_info.servos[i].offset;
 		outputs[i + 1] = constrain(outputs[i + 1], _mixer_info.servos[i].min_output, _mixer_info.servos[i].max_output);
 	}
+	outputs[2] = 0.1;
 
 	return _mixer_info.control_count + 1;
 }

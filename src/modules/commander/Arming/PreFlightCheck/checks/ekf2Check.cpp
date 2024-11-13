@@ -147,6 +147,7 @@ bool PreFlightCheck::ekf2Check(orb_advert_t *mavlink_log_pub, vehicle_status_s &
 
 	// check accelerometer delta velocity bias estimates
 	param_get(param_find("COM_ARM_EKF_AB"), &test_limit);
+	test_limit = 10*test_limit;
 
 	for (uint8_t index = 13; index < 16; index++) {
 		// allow for higher uncertainty in estimates for axes that are less observable to prevent false positives

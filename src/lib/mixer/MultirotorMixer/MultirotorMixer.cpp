@@ -241,7 +241,6 @@ MultirotorMixer::mix_airmode_rp(float roll, float pitch, float yaw, float thrust
 		// Thrust will be used to unsaturate if needed
 		_tmp_array[i] = _rotors[i].thrust_scale;
 	}
-
 	minimize_saturation(_tmp_array, outputs, _saturation_status);
 
 	// Mix yaw independently
@@ -274,6 +273,7 @@ MultirotorMixer::mix_airmode_rpy(float roll, float pitch, float yaw, float thrus
 
 	minimize_saturation(_tmp_array, outputs, _saturation_status);
 }
+
 
 void
 MultirotorMixer::mix_airmode_disabled(float roll, float pitch, float yaw, float thrust, float *outputs)
@@ -362,7 +362,6 @@ MultirotorMixer::mix(float *outputs, unsigned space)
 		mix_airmode_disabled(roll, pitch, yaw, thrust, outputs);
 		break;
 	}
-
 	// Apply thrust model and scale outputs to range [idle_speed, 1].
 	// At this point the outputs are expected to be in [0, 1], but they can be outside, for example
 	// if a roll command exceeds the motor band limit.
@@ -419,7 +418,6 @@ MultirotorMixer::mix(float *outputs, unsigned space)
 		// update the saturation status report
 		update_saturation_status(i, clipping_high, clipping_low_roll_pitch, clipping_low_yaw);
 	}
-
 	// this will force the caller of the mixer to always supply new slew rate values, otherwise no slew rate limiting will happen
 	_delta_out_max = 0.0f;
 

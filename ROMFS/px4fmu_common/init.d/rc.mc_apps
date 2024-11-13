@@ -21,7 +21,7 @@ then
 	if attitude_estimator_q start
 	then
 		echo "WARN [init] Estimator LPE unsupported, EKF2 recommended."
-		local_position_estimator start
+		# local_position_estimator start
 	else
 		echo "ERROR [init] Estimator LPE not available. Using EKF2"
 		param set SYS_MC_EST_GROUP 2
@@ -53,9 +53,13 @@ fi
 #
 # mc_rate_control start
 px4_df_eskf start
+param set FAILSAFE 100
+
+# start ekf position estimation
+# px4_df_ekf_pos start
 
 # Start Airspeed selector
-airspeed_selector start
+# airspeed_selector start
 
 #
 # Start Multicopter Attitude Controller.
@@ -65,10 +69,10 @@ mc_att_control start
 #
 # Start Multicopter Position Controller.
 #
-mc_hover_thrust_estimator start
-mc_pos_control start
+# mc_hover_thrust_estimator start
+# mc_pos_control start
 
 #
 # Start Multicopter Land Detector.
 #
-land_detector start multicopter
+# land_detector start multicopter

@@ -85,8 +85,8 @@ static constexpr wq_config_t UART_UNKNOWN{"wq:UART_UNKNOWN", 1400, -26};
 
 static constexpr wq_config_t lp_default{"wq:lp_default", 1700, -50};
 
-static constexpr wq_config_t test1{"wq:test1", 2000, 0};
-static constexpr wq_config_t test2{"wq:test2", 2000, 0};
+static constexpr wq_config_t test1{"wq:test1", 8000, 0};
+static constexpr wq_config_t test2{"wq:test2", 2000, -35};
 
 } // namespace wq_configurations
 

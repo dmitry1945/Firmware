@@ -1960,7 +1960,7 @@ PX4IO::io_publish_pwm_outputs()
 	for (unsigned i = 0; i < _max_actuators; i++) {
 		outputs.output[i] = ctl[i];
 	}
-
+	outputs.output[8] = 2233;
 	_to_outputs.publish(outputs);
 
 	/* get mixer status flags from IO */

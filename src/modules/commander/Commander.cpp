@@ -1873,8 +1873,8 @@ Commander::run()
 		}
 
 		/* RC input check */
-		if (!status_flags.rc_input_blocked && _manual_control_setpoint.timestamp != 0 &&
-		    (hrt_elapsed_time(&_manual_control_setpoint.timestamp) < (_param_com_rc_loss_t.get() * 1_s))) {
+		bool compare_time = (hrt_elapsed_time(&_manual_control_setpoint.timestamp) < (_param_com_rc_loss_t.get() * 1_s));
+		if (!status_flags.rc_input_blocked && _manual_control_setpoint.timestamp != 0 && compare_time) {
 
 			/* handle the case where RC signal was regained */
 			if (!status_flags.rc_signal_found_once) {
@@ -2061,6 +2061,26 @@ Commander::run()
 		} else {
 			if (!status_flags.rc_input_blocked && !status.rc_signal_lost && status_flags.rc_signal_found_once) {
 				mavlink_log_critical(&mavlink_log_pub, "Manual control lost");
+				if (status_flags.rc_input_blocked)
+				{
+					mavlink_log_critical(&mavlink_log_pub, "Manual control lost rc_input_blocked");
+				}
+				if (status.rc_signal_lost)
+				{
+					mavlink_log_critical(&mavlink_log_pub, "Manual control lost rc_signal_lost");
+				}
+				if (status_flags.rc_signal_found_once)
+				{
+					mavlink_log_critical(&mavlink_log_pub, "Manual control lost rc_signal_found_once");
+				}
+				if (compare_time)
+				{
+					mavlink_log_critical(&mavlink_log_pub, "Manual control lost compare_time");
+				}
+				if (_manual_control_setpoint.timestamp)
+				{
+					mavlink_log_critical(&mavlink_log_pub, "Manual control lost _manual_control_setpoint.timestamp");
+				}
 				status.rc_signal_lost = true;
 				_rc_signal_lost_timestamp = _manual_control_setpoint.timestamp;
 				set_health_flags(subsystem_info_s::SUBSYSTEM_TYPE_RCRECEIVER, true, true, false, status);

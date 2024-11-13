@@ -293,6 +293,8 @@ unsigned MixingOutput::motorTest()
 	return (_motor_test.in_test_mode || had_update) ? _max_num_outputs : 0;
 }
 
+extern float  save_current_output_value[16];
+
 bool MixingOutput::update()
 {
 	if (!_mixers) {
@@ -389,6 +391,11 @@ bool MixingOutput::update()
 
 	/* apply _param_mot_ordering */
 	reorderOutputs(_current_output_value);
+	for (int i=0 ; i< 16 ; i++)
+	{
+		save_current_output_value[i] = _current_output_value[i];
+	}
+
 
 	/* now return the outputs to the driver */
 	if (_interface.updateOutputs(stop_motors, _current_output_value, mixed_num_outputs, n_updates)) {
